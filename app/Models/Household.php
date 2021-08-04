@@ -18,4 +18,16 @@ class Household extends Model
     ];
 
     protected $dates = ['deleted_at'];
+
+    public function scopeActive($query){
+        $query->where('status', 1);
+    }
+
+    public function house(){
+        return $this->belongsTo(House::class);
+    }
+
+    public function families(){
+        return $this->hasMany(Family::class, 'household_id');
+    }
 }
