@@ -1,0 +1,30 @@
+.list-group{
+    background: #fff;
+    box-shadow: $shadow;
+    border-radius: $radius;
+    padding: 15px 0;
+
+    .list-group-item{
+        color: $dark;
+        background-color: #fff;
+
+        &:hover{
+            background-color: $primary;
+            color: #fff;
+        }
+    }
+}
+
+.profile-preview{
+    #image-preview{
+        object-fit: cover;
+        width: 80px;
+        height: 80px;
+    }
+}
+
+.btn-profile-image{
+    position: absolute;
+    bottom: 0px;
+    left: 50px;
+}
