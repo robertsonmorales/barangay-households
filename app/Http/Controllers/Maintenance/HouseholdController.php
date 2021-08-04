@@ -7,14 +7,14 @@ use Illuminate\Http\Request;
 
 use Validator, Arr;
 
-use App\Models\household;
+use App\Models\Household;
 use App\Models\House;
 use App\Models\Barangay;
 
 class HouseholdController extends Controller
 {
     protected $household, $house, $barangay;
-    public function __construct(household $household, House $house, Barangay $barangay){
+    public function __construct(Household $household, House $house, Barangay $barangay){
         config('app.timezone', 'Asia/Manila');
 
         $this->household = $household;
@@ -93,7 +93,7 @@ class HouseholdController extends Controller
             'breadcrumbs' => $this->breadcrumbs($name, $mode),
             'title' => 'Households',
             'barangays' => $barangays,
-            'houses' => $houses
+            'houses' => $houses,
         ]);
     }
 
