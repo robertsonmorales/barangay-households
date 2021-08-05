@@ -24,6 +24,37 @@ class IndividualController extends Controller
         $this->household = $household;
         $this->house = $house;
         $this->barangay = $barangay;
+
+        $this->ethnicity = array(
+            'aeta' => 'Aeta',
+            'agta' => 'Agta',
+            'item' => 'Itim',
+            'puti' => 'Puti'
+        );
+
+        $this->relationship = array(
+            'father-in-law' => 'Father',
+            'mother' => 'Mother',
+            'son' => 'Son',
+            'daughter' => 'Daughter',
+            'grandfather' => 'Grandfather',
+            'grandmother' => 'Grandmother',
+            'grandson' => 'Grandson',
+            'granddaughter' => 'Granddaughter',
+            'step-son' => 'Step-son',
+            'step-daughter' => 'Step-daughter',
+            'step-mother' => 'Step-mother',
+            'step-father' => 'Step-father',
+            'relative' => 'Relative'
+        );
+
+        $this->marital_status = array(
+            'single' => 'Single',
+            'married' => 'Married', 
+            'separated' => 'Separated',
+            'widowed' => 'Widowed',
+            'live-in' => 'Live-in'
+        );
     }
 
     /**
@@ -46,7 +77,7 @@ class IndividualController extends Controller
         $columnDefs = array(
             array('headerName'=>'BARANGAY','field'=> 'barangay_name', 'floatingFilter'=>false),
             array('headerName'=>'HOUSE NO.','field'=> 'house_no', 'floatingFilter'=>false),
-            array('headerName'=>'HOUSEHOLD NO.','field'=> 'household_id', 'floatingFilter'=>false),
+            array('headerName'=>'HOUSEHOLD NO.','field'=> 'household_no', 'floatingFilter'=>false),
             array('headerName'=>'FAMILY NO.','field'=> 'family_id', 'floatingFilter'=>false),
             array('headerName'=>'INDIVIDUAL NO.','field'=> 'individual_no', 'floatingFilter'=>false),
             array('headerName'=>'NAME','field'=> 'name', 'floatingFilter'=>false),
@@ -98,7 +129,10 @@ class IndividualController extends Controller
             'barangays' => $barangays,
             'houses' => $houses,
             'households' => $households,
-            'families' => $families
+            'families' => $families,
+            'ethnicity' => $this->ethnicity,
+            'marital_status' => $this->marital_status,
+            'relationship' => $this->relationship
         ]);
     }
 
@@ -110,7 +144,16 @@ class IndividualController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $this->validator($request);
+        $validated['created_by'] = auth()->user()->id;
+
+        $data = $this->individual->create($validated)->id;
+
+        $this->audit_trail_logs('', 'created', 'individual: '.$validated['individual_no'], $data);
+
+        return redirect()
+            ->route('individuals.index')
+            ->with('success', 'You have successfully added: '.$validated['individual_no']);
     }
 
     /**
@@ -132,7 +175,33 @@ class IndividualController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = $this->individual->findOrFail($id);
+        $data['individual_no'] = @explode('-', $data['individual_no'])[4];
+
+        $mode_action = 'update';
+        $name = ['Individuals', 'Edit', $data->individual_no];
+        $mode = [route('individuals.index'), route('individuals.edit', $id), route('individuals.edit', $id)];
+
+        $this->audit_trail_logs('', '', 'individuals: '.$data->individual_no, $id);
+
+        $barangays = $this->barangay->active()->get();
+        $houses = $this->house->active()->get();
+        $households = $this->household->active()->get();
+        $family = $this->family->active()->get();
+
+        return view('pages.individuals.form', [            
+            'mode' => $mode_action,
+            'breadcrumbs' => $this->breadcrumbs($name, $mode),
+            'title' => 'Individuals',
+            'data' => $data,
+            'barangays' => $barangays,
+            'houses' => $houses,
+            'households' => $households,
+            'families' => $family,
+            'ethnicity' => $this->ethnicity,
+            'marital_status' => $this->marital_status,
+            'relationship' => $this->relationship
+        ]);
     }
 
     /**
@@ -144,7 +213,17 @@ class IndividualController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $this->validator($request);
+
+        $validated['updated_by'] = auth()->user()->id;
+
+        $data = $this->individual->findOrFail($id)->update($validated);
+
+        $this->audit_trail_logs('', 'updated', 'individual: '.$validated['individual_no'], $id);
+
+        return redirect()
+            ->route('individuals.index')
+            ->with('success', 'You have successfully updated: '.$validated['individual_no']);
     }
 
     /**
@@ -155,23 +234,92 @@ class IndividualController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = $this->individual->findOrFail($id);
+        $data->deleted_by = auth()->user()->id;
+        $data->save();
+
+        $data->delete();
+
+        $this->audit_trail_logs('', 'deleted', 'individual: '.$data->individual_no, $id);
+
+        return redirect()
+            ->route('individuals.index')
+            ->with('success', 'You have successfully removed: '.$data->individual_no);
     }
 
     public function __change_values($rows){
         foreach ($rows as $key => $value) {
-            if (Arr::exists($value, 'household_id')) {
-                $household = $this->household->find($value['household_id']);
-                $value['household_id'] = $household->household_no;
+            if (Arr::exists($value, 'family_id')) {
+                $family = $this->family->find($value['family_id']);
+                $value['family_id'] = $family->family_no;
+                $value['household_no'] = $family->household->household_no;
+                $value['house_no'] = $family->household->house->house_no;
+                $value['barangay_name'] = $family->household->house->barangay->barangay_name;
+            }
 
-                $house = $household->house;
-                $value['house_no'] = $house->house_no;
+            $value['name'] = $value['last_name'].', '.$value['first_name'].' '.$value['middle_name'];
 
-                $barangay = $this->barangay->find($house->barangay_id);
-                $value['barangay_name'] = $barangay->barangay_name.' ('.$barangay->barangay_code.')';
+            if (Arr::exists($value, 'suffix') && $value['suffix'] != "") {
+                $value['name'] = $value['name'].' '.$value['suffix'];
             }
         }
 
         return $rows;
     }
+
+    public function validator(Request $request)
+    {
+        $id = $this->safeInputs($request->input('id'));
+        $family_no = $this->family->find($this->safeInputs($request->input('family_id')))->family_no;
+
+        $input = [
+            'family_id' => $this->safeInputs($request->input('family_id')),
+            'individual_no' => $family_no.'-'.$this->safeInputs($request->input('individual_no')),
+            'last_name' => $this->safeInputs($request->input('last_name')),
+            'first_name' => $this->safeInputs($request->input('first_name')),
+            'middle_name' => $this->safeInputs($request->input('middle_name')),
+            'suffix' => $this->safeInputs($request->input('suffix')),
+            'gender' => $this->safeInputs($request->input('gender')),
+            'birthdate' => $this->safeInputs($request->input('birthdate')),
+            'ethnicity' => $this->safeInputs($request->input('ethnicity')),
+            'relationship' => $this->safeInputs($request->input('relationship')),
+            'marital_status' => $this->safeInputs($request->input('marital_status')),
+            'status' => $this->safeInputs($request->input('status'))
+        ];
+
+        $rules = [
+            'family_id' => 'required|numeric',
+            'individual_no' => 'required|string|unique:individuals,individual_no,'.$id,
+            'first_name' => 'required|string',
+            'middle_name' => 'required|string',
+            'last_name' => 'required|string',
+            'suffix' => 'nullable|string',
+            'gender' => 'required|string',
+            'birthdate' => 'required|string',
+            'ethnicity' => 'required|string',
+            'relationship' => 'required|string',
+            'marital_status' => 'required|string',
+            'status' => 'required|numeric',
+        ];
+
+        $messages = [];
+
+        $customAttributes = [
+            'family_id' => 'family no.',
+            'individual_no' => 'individual no.',
+            'first_name' => 'first name',
+            'middle_name' => 'middle name',
+            'last_name' => 'last name',
+            'suffix' => 'suffix',
+            'gender' => 'gender',
+            'birthdate' => 'birthdate',
+            'ethnicity' => 'ethnicity',
+            'relationship' => 'relationship',
+            'marital_status' => 'marital status',
+            'status' => 'status',
+        ];
+
+        $validator = Validator::make($input, $rules, $messages,$customAttributes);
+        return $validator->validate();
+    } 
 }

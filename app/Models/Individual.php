@@ -23,7 +23,7 @@ class Individual extends Model
         $query->where('status', 1);
     }
 
-    public function families(){
+    public function family(){
         return $this->belongsTo(Family::class);
     }
 }

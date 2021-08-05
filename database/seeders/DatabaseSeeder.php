@@ -17,7 +17,12 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             NavigationSeeder::class,
-            UserLevelSeeder::class,
+            // UserLevelSeeder::class,
+            BarangaySeeder::class,
+            HouseSeeder::class,
+            HouseholdSeeder::class,
+            FamilySeeder::class,
+            IndividualSeeder::class
         ]);
     }
 }

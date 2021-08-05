@@ -26,9 +26,9 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'first_name' => Crypt::encryptString($this->faker->firstNameMale),
+            'first_name' => Crypt::encryptString($this->faker->firstName),
             'last_name' => Crypt::encryptString($this->faker->lastName),
-            'username' => $this->faker->firstNameMale,
+            'username' => $this->faker->userName,
             'contact_number' => Crypt::encryptString("+639".mt_rand(100000000, 999999999)),
             'email' => Crypt::encryptString($this->faker->unique()->safeEmail),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password

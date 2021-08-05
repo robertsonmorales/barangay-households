@@ -19,11 +19,11 @@ class UserSeeder extends Seeder
         User::factory()->count(20)->create();
 
         User::insert([
-            'first_name' => Crypt::encryptString('test'),
-            'last_name' => Crypt::encryptString('case'),
-            'username' => 'test',
+            'first_name' => Crypt::encryptString('jethro'),
+            'last_name' => Crypt::encryptString('caparosso'),
+            'username' => 'jethro',
             'contact_number' => Crypt::encryptString('09123456789'),
-            'email' => Crypt::encryptString('test@gmail.com'),
+            'email' => Crypt::encryptString('jethro@gmail.com'),
             'password' => Hash::make('7ujm&UJM'),
             'user_level_code' => 'dev',
             'created_by' => 1,
