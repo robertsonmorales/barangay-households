@@ -71,12 +71,10 @@ $(document).ready(function(){
         sortable: false,
         filter: false,
         editable: false,
-        maxWidth: 220,
-        minWidth: 210,
-        // pinned: 'left',
+        pinned: 'left',
         cellRenderer: function(params){
             var edit_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>';
-            var lock_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>';
+            // var lock_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>';
             // var email_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>';
             var trash_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>';
 
@@ -87,7 +85,7 @@ $(document).ready(function(){
             eDiv.innerHTML = '';
             eDiv.innerHTML+='<button id="'+params.data.id+'" title="Edit User" class="btn btn-primary btn-edit ml-1">'+ edit_icon +'</button>&nbsp;';
             // eDiv.innerHTML+='<button id="'+params.data.id+'" title="Email User" class="btn btn-info btn-email text-white">'+ email_icon +'</button>&nbsp;';
-            eDiv.innerHTML+='<button id="'+params.data.id+'" title="Lock User" class="btn btn-secondary btn-lock text-white">'+ lock_icon +'</button>&nbsp;';
+            // eDiv.innerHTML+='<button id="'+params.data.id+'" title="Lock User" class="btn btn-secondary btn-lock text-white">'+ lock_icon +'</button>&nbsp;';
             eDiv.innerHTML+='<button id="'+params.data.id+'" title="Delete User" class="btn btn-danger btn-remove">'+ trash_icon +'</button>&nbsp;';
 
             var btn_edit = eDiv.querySelectorAll('.btn-edit')[0];
@@ -108,29 +106,6 @@ $(document).ready(function(){
     };
 
     for (var i = data.column.length - 1; i >= 0; i--) {       
-        // if (data.column[i].field == "name") {
-        //     data.column[i].cellRenderer = function imageName(params) {
-        //         var first_name = params.data.first_name.charAt(0).toUpperCase() + params.data.first_name.substr(1);
-        //         var last_name = params.data.last_name.charAt(0).toUpperCase() + params.data.last_name.substr(1);
-        //         var full_name = first_name + ' ' + last_name;
-        //         // var avatar = "https://ui-avatars.com/api/?background=random&color=fff&name="+full_name+"&format=svg&rounded=true&bold=true&font-size=0.4&length=1";
-        //         // var image = params.data.profile_image;
-        //         // var defaultImage = "{{ asset('images/user_profiles/avatar.svg') }}";
-        //         // var public_path = "{{ asset('images/user_profiles/') }}";                
-        //         // var folder = params.data.username + params.data.id;
-        //         // var src = public_path + "/" + folder + "/" + image;
-        //         // var convertURI = (image == null) ? defaultImage : src;
-        //         // return '<div class="data-profile">\
-        //         //         <span class="profile" style="background-image: url(' + encodeURI(convertURI) + '); background-size: cover;"></span>\
-        //         //         <span class="account">'+ first_name + ' ' + last_name +'</span>\
-        //         //     </div>';
-        //         // return '<div class="data-profile">\
-        //         //         <span class="name ml-2">'+ full_name +'</span>\
-        //         //     </div>';
-        //         // <img src="'+avatar+'" class="profile">
-        //     }
-        // }
-
         if (data.column[i].field == "account_status") {
             data.column[i].cellRenderer = function display(params) {
                 if (params.data.account_status == "Active") {

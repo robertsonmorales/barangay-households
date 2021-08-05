@@ -31,8 +31,8 @@ class FamilyController extends Controller
      */
     public function index()
     {
-        $name = ['Households'];
-        $mode = [route('households.index')];
+        $name = ['Families'];
+        $mode = [route('families.index')];
         
         $pagesize = [25, 50, 75, 100, 125];
         
@@ -143,7 +143,7 @@ class FamilyController extends Controller
         $barangay_id = $this->house->find($house_id)->barangay->id;
 
         $mode_action = 'update';
-        $name = ['Household', 'Edit', $data->family_no];
+        $name = ['Families', 'Edit', $data->family_no];
         $mode = [route('families.index'), route('families.edit', $id), route('families.edit', $id)];
 
         $this->audit_trail_logs('', '', 'families: '.$data->family_no, $id);
@@ -228,6 +228,7 @@ class FamilyController extends Controller
 
     public function validator(Request $request)
     {
+
         $id = $this->safeInputs($request->input('id'));
         $household_no = $this->household->find($this->safeInputs($request->input('household_id')))->household_no;
 

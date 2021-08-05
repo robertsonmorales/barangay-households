@@ -34,9 +34,9 @@
                         <span>Add New Record</span>
                     </a>
 
-                    <button class="dropdown-item py-2" id="btn-import">
+                    <!-- <button class="dropdown-item py-2" id="btn-import">
                         <span>Import CSV</span>
-                    </button>
+                    </button> -->
 
                     <button class="dropdown-item py-2" id="btn-export">
                         <span>Export as CSV</span>                        

@@ -19,11 +19,8 @@
             id="barangay_id" 
             class="custom-select form-control @error('barangay_id') is-invalid @enderror"
             required>
-                <option value="" style="display: none;">Select Barangay...</option>
-
                 @foreach($barangays as $val)
-                <option value="{{ $val->id }}" 
-                {{ ($mode == 'update' && $barangay_id == $val->id) ? 'selected' : '' }}>{{ $val->barangay_name }}</option>
+                <option value="{{ $val->id }}" {{ ($mode == 'update' && $data->family->household->house->barangay_id == $val->id) ? 'selected' : '' }}>{{ $val->barangay_name }}</option>
                 @endforeach
             </select>
 
@@ -41,7 +38,7 @@
             class="custom-select form-control @error('house_id') is-invalid @enderror" 
             required>
                 @foreach($houses as $val)
-                <option value="{{ $val->id }}" {{ ($mode == 'update' && $house_id == $val->id) ? 'selected' : '' }}>{{ $val->house_id }}</option>
+                <option value="{{ $val->id }}" {{ ($mode == 'update' && $data->family->household->house_id == $val->id) ? 'selected' : '' }}>{{ $val->house_no }}</option>
                 @endforeach
             </select>
 
@@ -60,7 +57,7 @@
             class="custom-select form-control @error('household_id') is-invalid @enderror" 
             required>
                 @foreach($households as $val)
-                <option value="{{ $val->id }}" {{ ($mode == 'update' && $data->household_id == $val->id) ? 'selected' : '' }}>{{ $val->household_no }}</option>
+                <option value="{{ $val->id }}" {{ ($mode == 'update' && $data->family->household_id == $val->id) ? 'selected' : '' }}>{{ $val->household_no }}</option>
                 @endforeach
             </select>
 
@@ -79,11 +76,189 @@
             class="custom-select form-control @error('family_id') is-invalid @enderror" 
             required>
                 @foreach($families as $val)
-                <option value="{{ $val->id }}" {{ ($mode == 'update' && $data->family_id == $val->id) ? 'selected' : '' }}>{{ $val->family_name .' ('.$val->family_name.')' }}</option>
+                <option value="{{ $val->id }}" {{ ($mode == 'update' && $data->family_id == $val->id) ? 'selected' : '' }}>{{ $val->family_name .' ('.$val->family_no.')' }}</option>
                 @endforeach
             </select>
 
             @error('family_id')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+        </div>
+
+        <div class="input-group">
+            <label for="individual_no">Individual No.</label>
+
+            <input type="text" 
+            name="individual_no" 
+            id="individual_no" 
+            autocomplete="individual_no"
+            class="form-control @error('individual_no') is-invalid @enderror"
+            value="{{ ($mode == 'update') ? $data->individual_no : old('individual_no') }}"
+            required>
+
+            @error('individual_no')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+        </div>
+
+        <div class="input-group">
+            <label for="last_name">Last Name</label>
+
+            <input type="text" 
+            name="last_name" 
+            id="last_name" 
+            autocomplete="last_name"
+            class="form-control @error('last_name') is-invalid @enderror"
+            value="{{ ($mode == 'update') ? $data->last_name : old('last_name') }}"
+            required>
+
+            @error('last_name')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+        </div>
+
+        <div class="input-group">
+            <label for="first_name">First Name</label>
+
+            <input type="text" 
+            name="first_name" 
+            id="first_name" 
+            autocomplete="first_name"
+            class="form-control @error('first_name') is-invalid @enderror"
+            value="{{ ($mode == 'update') ? $data->first_name : old('first_name') }}"
+            required>
+
+            @error('first_name')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+        </div>
+
+        <div class="input-group">
+            <label for="middle_name">Middle Name</label>
+
+            <input type="text" 
+            name="middle_name" 
+            id="middle_name" 
+            autocomplete="middle_name"
+            class="form-control @error('middle_name') is-invalid @enderror"
+            value="{{ ($mode == 'update') ? $data->middle_name : old('middle_name') }}"
+            required>
+
+            @error('middle_name')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+        </div>
+
+        <div class="input-group">
+            <label for="suffix">Suffix (Jr, Sr, III)</label>
+
+            <input type="text" 
+            name="suffix" 
+            id="suffix" 
+            autocomplete="suffix"
+            class="form-control @error('suffix') is-invalid @enderror"
+            value="{{ ($mode == 'update') ? $data->suffix : old('suffix') }}">
+
+            @error('suffix')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+        </div>
+
+        <div class="input-group">
+            <label for="gender">Gender</label>
+            <select name="gender" 
+            id="gender" 
+            class="custom-select form-control @error('gender') is-invalid @enderror"
+            required>
+                <option value="1" {{ ($mode == 'update' && $data->gender == 1) ? 'selected' : '' }}>Male</option>
+                <option value="0" {{ ($mode == 'update' &&  $data->gender == 0) ? 'selected' : '' }}>Female</option>
+            </select>
+
+            @error('gender')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+        </div>
+
+        <div class="input-group">
+            <label for="birthdate">Birthdate</label>
+
+            <input type="date" 
+            name="birthdate" 
+            id="birthdate" 
+            autocomplete="birthdate"
+            class="form-control @error('birthdate') is-invalid @enderror"
+            value="{{ ($mode == 'update') ? $data->birthdate : old('birthdate') }}"
+            required>
+
+            @error('birthdate')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+        </div>
+
+        <div class="input-group">
+            <label for="ethnicity">Ethnicity</label>
+            <select name="ethnicity" 
+            id="ethnicity" 
+            class="custom-select form-control @error('ethnicity') is-invalid @enderror"
+            required>
+            @foreach($ethnicity as $key => $val)
+                <option value="{{ $key }}" {{ ($mode == 'update' && $key == $data->ethnicity) ? 'selected' : '' }}>{{ $val }}</option>
+            @endforeach
+            </select>
+
+            @error('ethnicity')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+        </div>
+
+        <div class="input-group">
+            <label for="relationship">Relationship</label>
+            <select name="relationship" 
+            id="relationship" 
+            class="custom-select form-control @error('relationship') is-invalid @enderror"
+            required>
+            @foreach($relationship as $key => $val)
+                <option value="{{ $key }}" {{ ($mode == 'update' && $key == $data->relationship) ? 'selected' : '' }}>{{ $val }}</option>
+            @endforeach
+            </select>
+
+            @error('relationship')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+        </div>
+
+        <div class="input-group">
+            <label for="marital_status">Marital Status</label>
+            <select name="marital_status" 
+            id="marital_status" 
+            class="custom-select form-control @error('marital_status') is-invalid @enderror"
+            required>
+            @foreach($marital_status as $key => $val)
+                <option value="{{ $key }}" {{ ($mode == 'update' && $key == $data->marital_status) ? 'selected' : '' }}>{{ $val }}</option>
+            @endforeach
+            </select>
+
+            @error('marital_status')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
             </span>
@@ -135,9 +310,9 @@ $(function(){
     $('.select2-selection--single').addClass('form-control');
 });
 
-$('#card-form').on('submit', function(){
-    var mode = "{{ $mode }}";
+var mode = @json($mode);
 
+$('#card-form').on('submit', function(){
     $('#btn-submit').css('cursor', 'not-allowed').prop('disabled', true);
     $('#btn-submit').html((mode == "update") ? "Submitting Changes.." : "Submitting..");
 
@@ -183,6 +358,34 @@ $('#household_id').on('change', function(){
     }
 });
 
+
+$('#ethnicity').select2({
+    placeholder: "Select Ethnicity...",
+    templateSelection: function (data, container) {
+        // Add custom attributes to the <option> tag for the selected option
+        $(data.element).attr('data-custom-attribute', data.customValue);
+        return data.text;
+    }
+});
+
+$('#relationship').select2({
+    placeholder: "Select Relationhip...",
+    templateSelection: function (data, container) {
+        // Add custom attributes to the <option> tag for the selected option
+        $(data.element).attr('data-custom-attribute', data.customValue);
+        return data.text;
+    }
+});
+
+$('#marital_status').select2({
+    placeholder: "Select Marital Status...",
+    templateSelection: function (data, container) {
+        // Add custom attributes to the <option> tag for the selected option
+        $(data.element).attr('data-custom-attribute', data.customValue);
+        return data.text;
+    }
+});
+
 function loadHouses(){
     var houses = @json($houses);
     var barangay_id = $('#barangay_id').val();
@@ -195,10 +398,7 @@ function loadHouses(){
         }
     }
 
-    $('#house_id').append(house_options);
-
-    loadHouseholds();
-    
+    $('#house_id').append(house_options);    
 }
 
 function loadHouseholds(){
@@ -216,8 +416,6 @@ function loadHouseholds(){
     }
 
     $('#household_id').append(household_options);
-
-    loadFamilies();
 }
 
 function loadFamilies(){
@@ -237,7 +435,11 @@ function loadFamilies(){
     $('#family_id').append(families_options);
 }
 
-loadHouses();
+if(mode == 'create'){
+    loadHouses();
+    loadHouseholds();
+    loadFamilies();
+}
 
 </script>
 @endsection

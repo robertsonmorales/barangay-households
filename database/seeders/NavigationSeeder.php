@@ -21,9 +21,9 @@ class NavigationSeeder extends Seeder
     public function run()
     {
         $navs = array(
-            array(
-                'main' => array('Dashboard', 'dashboard', 'Dashboard', 'activity', 'single')
-            ),
+            // array(
+            //     'main' => array('Dashboard', 'dashboard', 'Dashboard', 'activity', 'single')
+            // ),
             // array(
             //     'main' => array('Settings', 'settings', '', 'settings', 'main'),
             //     'sub' => array(

@@ -11,6 +11,14 @@ class House extends Model
 {
     use HasFactory, SoftDeletes;
 
+    const HOUSE_DETAILS = array(
+        'strong_materials',
+        'weak_materials',
+        'mixed_but_strong',
+        'mixed_but_weak',
+        'shanty',
+    );
+
     protected $table = 'houses';
 
     protected $fillable = [

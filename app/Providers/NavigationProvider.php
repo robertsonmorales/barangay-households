@@ -31,7 +31,7 @@ class NavigationProvider extends ServiceProvider
 
             $parentNav = DB::table('navigations')
                 ->whereIn('nav_type', ['main', 'single'])
-                ->whereAnd('status', 1)
+                ->where('status', 1)
                 ->get();
         
             $arr = [];
