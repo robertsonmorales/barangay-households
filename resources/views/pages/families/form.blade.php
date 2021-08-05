@@ -288,6 +288,7 @@ $('#barangay_id').find(':selected').data('custom-attribute');
 
 $('#barangay_id').on('change', function(){
     loadHouses();
+    loadHouseholds();
 }).select2({
     placeholder: "Select Barangay...",
     templateSelection: function (data, container) {
