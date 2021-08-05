@@ -12,6 +12,8 @@ use App\Models\Household;
 use App\Models\House;
 use App\Models\Barangay;
 
+set_time_limit(0);
+
 class FamilyController extends Controller
 {
     protected $family, $household, $house, $barangay;
