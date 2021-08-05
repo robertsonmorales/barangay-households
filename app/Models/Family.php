@@ -26,4 +26,8 @@ class Family extends Model
     public function household(){
         return $this->belongsTo(Household::class);
     }
+
+    public function individuals(){
+        return $this->hasMany(Individual::class, 'family_id');
+    }
 }

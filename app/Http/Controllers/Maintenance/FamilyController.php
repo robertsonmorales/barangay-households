@@ -45,7 +45,7 @@ class FamilyController extends Controller
             array('headerName'=>'BARANGAY','field'=> 'barangay_name', 'floatingFilter'=>false),
             array('headerName'=>'HOUSE NO.','field'=> 'house_no', 'floatingFilter'=>false),
             array('headerName'=>'HOUSEHOLD NO.','field'=> 'household_id', 'floatingFilter'=>false),
-            array('headerName'=>'FAMILY NO.','field'=> 'family_name', 'floatingFilter'=>false),
+            array('headerName'=>'FAMILY NO.','field'=> 'family_no', 'floatingFilter'=>false),
             array('headerName'=>'FAMILY NAME','field'=> 'family_name', 'floatingFilter'=>false),
             array('headerName'=>'STATUS','field' => 'status', 'floatingFilter'=>false),
             array('headerName'=>'CREATED BY','field' => 'created_by', 'floatingFilter'=>false),
