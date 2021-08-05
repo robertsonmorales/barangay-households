@@ -79,13 +79,13 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        {{-- <div class="form-group row">
                             <div class="col text-center">
                                 @if (Route::has('password.request'))
                                 <a href="{{ route('password.request') }}" class="font-size-sm">{{ __('Forgot Your Password?') }}</a>
                                 @endif
                             </div>
-                        </div>
+                        </div> --}}
                     </form>
                 </div>
             </div>
